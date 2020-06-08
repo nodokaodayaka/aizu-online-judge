@@ -1,21 +1,19 @@
 n = int(input())
-A = [int(i) for i in input().split()]
-
+A = list(map(int, input().split()))
 q = int(input())
-m = [int(i) for i in input().split()]
+M = list(map(int, input().split()))
 
-def dfs(idx, s, target):
-    print ('idx : {idx}, s : {s}, target : {target}'.format(idx=idx, s=s, target=target))
-    if s == target:
-        return 1
-    
-    if s > target or idx == n:
-        return 0
-    if s + sum(A[idx:]) < target:
-        return 0
-
-    return dfs(idx+1, s, target) or dfs(idx+1, s + A[idx], target)
-m = [8]
-for target in m:
-    ans = 'yes' if dfs(0, 0, target) else 'no'
-    print(ans)
+for x in M:
+  dp = [[0 for _ in range(x+1)] for _ in range(n+1)]
+  dp[0][0]=1
+  for i in range(n):
+    for j in range(x+1):
+      if A[i] <= j:
+        dp[i+1][j] = dp[i][j - A[i]] or dp[i][j]
+      else:
+        dp[i+1][j] = dp[i][j]
+       
+  if dp[n][x] == 1:
+    print ('yes')
+  else:
+    print ('no')
