@@ -1,50 +1,25 @@
-class LinkedList:
+from collections import deque
 
-  def __init__(self, id = None):
-    self.id = id
-    self.next = self
-    self.prev = self
+d = deque()
+n = int(input())
+items = [map(str, input().split()) for _ in range(n)]
 
-  def insert(self, id):
-    new = LinkedList(id)
-    new.next = self.next
-    new.prev = self
-    self.next = new
-    self.next.prev = new
+for item in items:
+  line = list(item)
 
-  def delete(self, id):
-    cur = self.next
-    while cur.id is not None:
-      if cur.id == id:
-        cur.next.prev = cur.prev
-        cur.prev.next = cur.next
-        break
-      cur = cur.next
-    pass
+  if line[0] == 'insert':
+    d.append(line[1])
+  elif line[0] == 'delete':
+    if line[1] in d:
+      d.remove(line[1])
+  elif line[0] == 'deleteFirst':
+    d.popleft()
+  elif line[0] == 'deleteLast':
+    d.pop()
 
-  def printList(self):
-    node = self.next
-    while node.id is not None:
-      print node, node.__dict__
-      node = node.next
+ans = []
+print (d)
+while d:
+  ans.append(d.pop())
 
-
-n = int(raw_input())
-
-linkedList = LinkedList()
-for _ in range(n):
-  var = raw_input().split()
-  command = var[0]
-  if command == 'insert':
-    linkedList.insert(var[1])
-    pass
-  if command == 'delete':
-    linkedList.delete(var[1])
-    pass
-  if command == 'deleteFirst':
-    #linkedList.deleteFirst()
-    pass
-  if command == 'deleteLast':
-    #linkedList.deleteLast()
-    pass
-linkedList.printList()
+print (' '.join(ans))
